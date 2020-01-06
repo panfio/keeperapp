@@ -1,0 +1,23 @@
+server:
+  port: 8088
+
+
+spring:
+  application.name: "Keeper"
+  datasource:
+    initialization-mode: always  #dev only
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: "postgres"
+    password: "passpass"
+
+  jpa:
+    hibernate:
+      generate-ddl: true
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQL10Dialect
+  jackson:
+    serialization.WRITE_DATES_AS_TIMESTAMPS: false
+    time-zone: UTC
+
+jwt.jwtSecret: xqFw4KQiRAbH1dqgE_m1y_F0ihj5bubpAJCAxq28ZYExi_jIQYw6UIr2F7TjPwJ3aCsjONvsCBitx
+jwt.jwtExpirationInMs: 604800000
