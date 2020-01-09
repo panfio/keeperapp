@@ -10,10 +10,11 @@ export interface ILinkInfo {
   link: string,
   cut: string,
   date: Date,
+  visitCount: number,
 }
 
 export const LinkInfo: React.FC<ILinkInfo> = (props: ILinkInfo) => {
-  const { name, link, cut, date } = props;
+  const { name, link, cut, date, visitCount } = props;
   ////          ////
   //// Hardcode ////
   ////          ////
@@ -34,6 +35,7 @@ export const LinkInfo: React.FC<ILinkInfo> = (props: ILinkInfo) => {
               <b>Raw: </b> {link}<br />
               <b>Cut: </b><a href={cutLink} >{cutLink}</a>  <br />
               <b>Date: </b>{new Date(date).toLocaleString()}<br />
+              <b>Visit count: </b>{visitCount}<br />
             </React.Fragment>
           }
         />

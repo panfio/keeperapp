@@ -3,6 +3,7 @@ import useHttp from '../hooks/http.hook';
 import { useSnackbar } from 'notistack';
 import AuthContext from '../context/AuthContext';
 import { Link, useHistory } from 'react-router-dom';
+import { host } from '../config/constant';
 
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
@@ -26,8 +27,7 @@ const LoginPage: React.FC = () => {
   const loginHandler = async () => {
     try {
       const data = await request(
-        //HARDCODE
-        'http://localhost:8088/api/auth/signin',
+        host + '/api/auth/signin',
         'POST', JSON.stringify(form),
         new Headers({
           'Content-type': 'application/json'
@@ -58,9 +58,7 @@ const LoginPage: React.FC = () => {
               required fullWidth
               value={form.usernameOrEmail}
               onChange={_handleTextFieldChange}
-              id="usernameOrEmail"
-              label="Login"
-              variant="outlined"
+              id="usernameOrEmail" label="Login" variant="outlined"
               helperText="Username or Email" />
           </div>
           <div style={{ margin: '1em' }} >
@@ -68,20 +66,17 @@ const LoginPage: React.FC = () => {
               required fullWidth
               value={form.password}
               onChange={_handleTextFieldChange}
-              id="password"
-              label="Password"
-              type="password" 
-              variant="outlined"
-              helperText="Weak password" />
+              id="password" label="Password" type="password"
+              variant="outlined" />
           </div>
         </CardContent>
         <CardActions>
-          <Button
-            variant="outlined" color="primary"
-            onClick={loginHandler}>
+          <Button onClick={loginHandler} variant="outlined" color="primary">
             Login
           </Button>
-          <Button component={Link} to={'/signup'} variant="outlined"  color="secondary">Sign Up</Button>
+          <Button component={Link} to={'/signup'} variant="outlined" color="secondary">
+            Sign Up
+          </Button>
         </CardActions>
       </Card>
     </Container>
