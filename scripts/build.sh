@@ -11,7 +11,7 @@ cd ..
 rm -rf ./keeper/src/main/resources/static/*
 cp -r ./frontend/build/* ./keeper/src/main/resources/static/
 cd ./keeper
-./mvnw clean install package
+./mvnw -B clean install package
 
 #build container
 cd ..

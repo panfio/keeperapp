@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import useHttp from '../hooks/http.hook';
 import { useSnackbar } from 'notistack';
 import { useHistory } from 'react-router-dom';
+import { host } from '../config/constant';
 
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
@@ -36,8 +37,7 @@ const SignUpPage: React.FC = () => {
   const signUpHandler = async () => {
     try {
       const data = await request(
-        //HARDCODE
-        'http://localhost:8088/api/auth/signup',
+        host + '/api/auth/signup',
         'POST', JSON.stringify(form),
         new Headers({
           'Content-type': 'application/json'
