@@ -5,7 +5,7 @@ server:
 spring:
   application.name: "Keeper"
   datasource:
-    #initialization-mode: always  #dev only
+    initialization-mode: always  #dev only
     url: "jdbc:postgresql://localhost:5432/postgres"
     username: "postgres"
     password: "passpass"
