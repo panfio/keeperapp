@@ -26,12 +26,12 @@ export const useAuth = () => {
     localStorage.removeItem(userDataStorage);
   }, [])
 
-  // useEffect(() => {
-  //   const data = JSON.parse(localStorage.getItem(userDataStorage)!);
-  //   if (data && data.token) {
-  //     login(data.token, data.userId)
-  //   }
-  // }, [login])
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem(userDataStorage)!);
+    if (data && data.token) {
+      login(data.token, data.userId)
+    }
+  }, [login])
 
   return { login, logout, token, userId }
 }

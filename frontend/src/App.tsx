@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { useRoutes } from './routes';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import Header from './components/Header';
 import { SnackbarProvider } from 'notistack';
 import { useAuth } from './hooks/auth.hook';

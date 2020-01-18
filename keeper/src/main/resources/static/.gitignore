@@ -1,6 +1,6 @@
-# directory must be empty
+# Ignore everything in this directory
 *
-
+# Except this file
 !.gitignore
 
 

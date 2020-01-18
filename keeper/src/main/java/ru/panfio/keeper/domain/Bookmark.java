@@ -9,23 +9,17 @@ import java.time.Instant;
 
 @Data
 @Entity
-@Table(name = "links", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-                "cut"
-        })}
-)
-public class Link {
+@Table(name = "bookmarks")
+public class Bookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private long visitCount;
-    private String name;
     @NotBlank
     @Column(name = "link", length = 1000)
     private String link;
-    @NotBlank
-    @Column(name = "cut", length = 32, unique = true)
-    private String cut;
+    private String title;
+    private String description;
+    private String cover;
     private Instant date;
 
     @JsonIgnore
@@ -35,12 +29,12 @@ public class Link {
 
     @Override
     public String toString() {
-        return "Link{" +
+        return "Bookmark{" +
                 "id=" + id +
-                ", visitCount=" + visitCount +
-                ", name='" + name + '\'' +
                 ", link='" + link + '\'' +
-                ", cut='" + cut + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", cover='" + cover + '\'' +
                 ", date=" + date +
                 '}';
     }

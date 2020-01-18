@@ -6,7 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import ru.panfio.keeper.domain.Link;
 import ru.panfio.keeper.repository.LinkRepo;
+
+import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -15,31 +19,28 @@ public class RedirectController {
     @Autowired
     private final LinkRepo linkRepo;
 
-    /**
-     * {@inheritDoc}
-     */
     public RedirectController(LinkRepo linkRepo) {
         this.linkRepo = linkRepo;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Transactional
     @GetMapping("/to/{cut}")
     public ModelAndView redirectShortLink(@PathVariable String cut) {
-        if (linkRepo.findByCut(cut).isPresent()) {
+        Optional<Link> maybeLink = linkRepo.findByCut(cut);
+        if (maybeLink.isPresent()) {
+
+            //todo concurrent access issues
+            Link link = maybeLink.get();
+            link.setVisitCount(link.getVisitCount() + 1);
+            linkRepo.save(link);
+
             log.info("Redirected from /{}", cut);
-            return new ModelAndView(
-                    "redirect:" +
-                    linkRepo.findByCut(cut).get().getLink());
+            return new ModelAndView("redirect:" + link.getLink());
         }
         return new ModelAndView("redirect:/notfound");
     }
 
     //CHECKSTYLE:OFF
-    /**
-     * {@inheritDoc}
-     */
     @GetMapping("/notfound")
     public String notFoundPage() {
         return "<!DOCTYPE HTML>\n" +

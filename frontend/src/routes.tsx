@@ -4,7 +4,6 @@ import { LinksPage } from './pages/LinksPage';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import SignUpPage from './pages/SignUpPage';
-import PostPage from './pages/PostPage';
 import BookmarkPage from './pages/BookmarkPage';
 
 export const useRoutes = (isAuthenticated: Boolean) => {
@@ -16,9 +15,6 @@ export const useRoutes = (isAuthenticated: Boolean) => {
         </Route>
         <Route path="/links" exact>
           <LinksPage />
-        </Route>
-        <Route path="/posts" exact>
-          <PostPage />
         </Route>
         <Route path="/bookmarks" exact>
           <BookmarkPage />

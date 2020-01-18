@@ -38,9 +38,6 @@ const Header: React.FC = () => {
           <Button component={Link} to={'/bookmarks'} color="inherit">
             Bookmarks
           </Button>
-          <Button component={Link} to={'/posts'} color="inherit">
-            Posts
-          </Button>
           {
             (auth.isAuthenticated)
               ? <Button color="inherit" onClick={auth.logout}>Logout</Button>

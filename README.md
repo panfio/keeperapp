@@ -14,6 +14,8 @@ cd keeperapp
 docker-compose up
 ```
 
+Go to http://localhost:8008/ 
+
 ## Used technologies
 
 TypeScript | React | material-ui

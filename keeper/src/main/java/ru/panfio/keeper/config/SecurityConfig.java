@@ -73,8 +73,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/",
+                        "/manifest.json",
                         "/favicon.ico",
                         "/**/*.png",
+                        "/**/*.json",
                         "/**/*.gif",
                         "/**/*.svg",
                         "/**/*.jpg",
@@ -82,12 +84,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js")
                 .permitAll()
-                .antMatchers("/to/**", "/notfound", "/api/auth/**")
+                .antMatchers(  "/to/**", "/notfound", "/api/auth/**")
                 .permitAll()
                 .antMatchers("/v2/**", "/swagger-resources/**", "/webjars/**", "/swagger-ui.html")
-                .permitAll()
-                .antMatchers("/api/user/checkUsernameAvailability",
-                        "/api/user/checkEmailAvailability")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/users/**")
                 .permitAll()

@@ -1,17 +1,14 @@
 package ru.panfio.keeper.service;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
+import ru.panfio.keeper.config.security.UserPrincipal;
 import ru.panfio.keeper.domain.Link;
 import ru.panfio.keeper.domain.payload.LinkCreationRequest;
 import ru.panfio.keeper.repository.LinkRepo;
 import ru.panfio.keeper.repository.UserRepo;
 
 import javax.transaction.Transactional;
-import java.net.URL;
 import java.time.Instant;
 import java.util.Random;
 
@@ -19,6 +16,7 @@ import java.util.Random;
 @Service
 public class LinkService {
 
+    public static final int HASH_LENGTH = 5;
     private final LinkRepo linkRepo;
     private final UserRepo userRepo;
 
@@ -27,33 +25,55 @@ public class LinkService {
         this.userRepo = userRepo;
     }
 
-    //CHECKSTYLE:OFF
-    @SneakyThrows
+    /**
+     * Creates a short link.
+     *
+     * @param currentUser authorised user
+     * @param request     Link Creation Request
+     * @return created link or null if any errors
+     */
     @Transactional
-    public Link createLink(LinkCreationRequest request) {
+    public Link createLink(UserPrincipal currentUser, LinkCreationRequest request) {
+        String url = request.getLink();
+        if (!UrlUtils.isValidUrl(url)) {
+            return null;
+        }
+
         Link link = new Link();
-
-        link.setLink(request.getLink());
-        //todo check existing urls
-        link.setCut(genRandomString(4));
+        link.setLink(url);
+        link.setCut(genUrlId(HASH_LENGTH));
         link.setDate(Instant.now());
-        userRepo.findById(request.getUserId())
-                .ifPresent(user -> link.setUser(user));
+        userRepo.findById(currentUser.getId()).ifPresent(link::setUser);
+        link.setName(UrlUtils.getLinkTitle(url));
 
-        //fail when no  http://
-        //todo error on https://www.baeldung.com/java-collections-complexity
-        //todo url validation
-        Document doc = Jsoup.parse(new URL(request.getLink()), 50000);
-        String htmlTitle = doc.head().tagName("title").text();
-        //todo when title is too big
-        link.setName(htmlTitle);
         log.info("Created link {}", link);
         return linkRepo.save(link);
     }
 
+    /**
+     * Generates unique url id.
+     *
+     * @param idLength URL
+     * @return generated id
+     */
+    private String genUrlId(final int idLength) {
+        for (;;) {
+            String urlId = genRandomString(idLength);
+            if (linkRepo.findByCut(urlId).isPresent()) {
+                continue;
+            }
+            return urlId;
+        }
+    }
 
-    //todo create util package
-    private String genRandomString(int length) {
+    /**
+     * Generates random string with the given length.
+     *
+     * @param length length
+     * @return generated string
+     */
+    public String genRandomString(int length) {
+        //CHECKSTYLE:OFF
         int leftLimit = 48; // numeral '0'
         int rightLimit = 122; // letter 'z'
         Random random = new Random();
@@ -64,7 +84,6 @@ public class LinkService {
                         StringBuilder::appendCodePoint,
                         StringBuilder::append)
                 .toString();
+        //CHECKSTYLE:ON
     }
-    //CHECKSTYLE:ON
-
 }
